@@ -1,0 +1,6 @@
+spring:
+  application:
+    # 应用名称
+    name: guava-example
+  profiles:
+    active: dev

@@ -10,18 +10,21 @@
         <list>
           <option value="progrmTTpo" />
           <option value="progrmTTpo" />
+          <option value="guava-Demo" />
         </list>
       </option>
       <option name="ignoredPackages">
         <list>
           <option value="ch.qos.logback:logback-classic:1.2.10" />
           <option value="ch.qos.logback:logback-core:1.2.10" />
+          <option value="com.baomidou:mybatis-plus-core:3.4.3" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
           <option value="Not exploitable" />
           <option value="In progress" />
+          <option value="Not exploitable" />
         </list>
       </option>
     </inspection_tool>
