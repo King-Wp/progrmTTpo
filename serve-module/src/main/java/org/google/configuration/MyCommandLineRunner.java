@@ -1,11 +1,7 @@
 package org.google.configuration;
 
-import org.google.core.RedisCache;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author: 11653
@@ -16,11 +12,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class MyCommandLineRunner implements CommandLineRunner {
 
-    @Resource
-    private RedisCache redisCache;
-
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         System.out.println("启动完成");
     }
 
