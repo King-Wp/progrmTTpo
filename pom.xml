@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>guava-Demo</module>
+        <module>serve-module</module>
     </modules>
 
     <properties>
