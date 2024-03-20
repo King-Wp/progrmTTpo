@@ -1,12 +1,12 @@
 server:
   port: 8082
 
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/project_po?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
-    username: root
-    password: 7200
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/project_po?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+#    username: root
+#    password: 7200
 
 mybatis:
 #  type-aliases-package: cn.mrcode.foodiedev.pojo    # 实体层
