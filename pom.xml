@@ -11,6 +11,7 @@
     <modules>
         <module>guava-Demo</module>
         <module>serve-module</module>
+        <module>experimental_project</module>
     </modules>
 
     <properties>
