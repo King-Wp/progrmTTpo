@@ -18,8 +18,6 @@ import java.time.format.DateTimeFormatter;
 public class PdfEvent extends PdfPageEventHelper {
 
     private final Image backgroundImage;
-    private boolean newPageStarted = true;
-
 
     public PdfEvent(String imagePath) {
         try {
@@ -34,25 +32,12 @@ public class PdfEvent extends PdfPageEventHelper {
         PdfContentByte canvas = writer.getDirectContentUnder();
         // 设置背景图片的位置和尺寸
         backgroundImage.setAbsolutePosition(0, 0);
-        backgroundImage.scaleAbsolute(PageSize.A4.rotate());
+        backgroundImage.scaleAbsolute(new Rectangle(960, 540));
         // 在底层画布上添加背景图片
         try {
             canvas.addImage(backgroundImage);
         } catch (DocumentException e) {
             throw new RuntimeException(e);
-        }
-        newPageStarted = true;
-    }
-
-    @Override
-    public void onStartPage(PdfWriter writer, Document document) {
-        if (newPageStarted) {
-            try {
-                document.add(new Paragraph("\n\n")); // 添加两行空白，预留背景图片标题空间
-            } catch (DocumentException e) {
-                e.printStackTrace();
-            }
-            newPageStarted = false;
         }
     }
 }
