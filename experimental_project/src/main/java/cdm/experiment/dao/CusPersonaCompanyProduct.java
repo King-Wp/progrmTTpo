@@ -16,6 +16,21 @@ public class CusPersonaCompanyProduct implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
+    public CusPersonaCompanyProduct() {
+    }
+
+    public CusPersonaCompanyProduct(Long id, String classes, String filterName, String icon, String type, String brief, String companyName, String companyId, String productName) {
+        this.id = id;
+        this.classes = classes;
+        this.filterName = filterName;
+        this.icon = icon;
+        this.type = type;
+        this.brief = brief;
+        this.companyName = companyName;
+        this.companyId = companyId;
+        this.productName = productName;
+    }
+
     /** 主键ID */
     private Long id;
 

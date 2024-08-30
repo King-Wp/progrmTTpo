@@ -1,4 +1,5 @@
 import cdm.experiment.Event.PdfEvent;
+import cdm.experiment.dao.CusPersonaCompanyProduct;
 import cdm.experiment.utils.FontUtils;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
@@ -62,41 +63,41 @@ public class PDFText {
             document.newPage();
             writer.setPageEvent(null);
             writer.setPageEvent(new PdfEvent(imagePath + "公司产品信息.png","测试"));
-            List<String> objects = new ArrayList<>();
-            for (int i = 0; i < 40; i++) {
-                objects.add("公司名称");
+            List<CusPersonaCompanyProduct> objects = new ArrayList<>();
+            CusPersonaCompanyProduct cusPersonaCompanyProduct = new CusPersonaCompanyProduct(1L, "电力", "测试", "", "6656", "", "", "", "productName");
+            for (int i = 0; i < 10; i++) {
+                objects.add(cusPersonaCompanyProduct);
             }
-
             companyProductInfo(document, new ArrayList<>(Arrays.asList("产品名称", "产品简称", "产品分类", "领域")),objects);
 
-            document.newPage();
-            writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "客户.png","测试"));
-            companyProductInfo(document, new ArrayList<>(Arrays.asList("客户", "销售金额", "报告期", "数据来源")),objects);
-
-            document.newPage();
-            writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "公司人员结构.png","测试"));
-            companyProductInfo(document, new ArrayList<>(Arrays.asList("职位", "姓名")),objects);
-
-            document.newPage();
-            writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "采购统计.png","测试"));
-            topHeading(writer, document, "中国电信集团有限公司共采购项目4项，合计采购金额25598.3万元，其中：");
-
-            document.newPage();
-            writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "客户近三年招标结果.png","测试"));
-            biddingRanking(document);
-
-            document.newPage();
-            writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "业绩库.png","测试"));
-            List<String> objects2 = new ArrayList<>();
-            for (int i = 0; i < 70; i++) {
-                objects2.add("公司名称");
-            }
-            companyProductInfo(document, new ArrayList<>(Arrays.asList("客户单位全称", "合同名称", "合同编号", "金额","签订日期","所属公司","经办人")),objects2);
+//            document.newPage();
+//            writer.setPageEvent(null);
+//            writer.setPageEvent(new PdfEvent(imagePath + "客户.png","测试"));
+//            companyProductInfo(document, new ArrayList<>(Arrays.asList("客户", "销售金额", "报告期", "数据来源")),objects);
+//
+//            document.newPage();
+//            writer.setPageEvent(null);
+//            writer.setPageEvent(new PdfEvent(imagePath + "公司人员结构.png","测试"));
+//            companyProductInfo(document, new ArrayList<>(Arrays.asList("职位", "姓名")),objects);
+//
+//            document.newPage();
+//            writer.setPageEvent(null);
+//            writer.setPageEvent(new PdfEvent(imagePath + "采购统计.png","测试"));
+//            topHeading(writer, document, "中国电信集团有限公司共采购项目4项，合计采购金额25598.3万元，其中：");
+//
+//            document.newPage();
+//            writer.setPageEvent(null);
+//            writer.setPageEvent(new PdfEvent(imagePath + "客户近三年招标结果.png","测试"));
+//            biddingRanking(document);
+//
+//            document.newPage();
+//            writer.setPageEvent(null);
+//            writer.setPageEvent(new PdfEvent(imagePath + "业绩库.png","测试"));
+//            List<String> objects2 = new ArrayList<>();
+//            for (int i = 0; i < 70; i++) {
+//                objects2.add("公司名称");
+//            }
+//            companyProductInfo(document, new ArrayList<>(Arrays.asList("客户单位全称", "合同名称", "合同编号", "金额","签订日期","所属公司","经办人")),objects2);
 
             // 关闭文档
             document.close();
@@ -251,12 +252,15 @@ public class PDFText {
                 redTypeCenter(info, s);
             }
 
-            for (int i = 0; i < t.size();) {
-                for (int i1 = 0; i1 < label.size(); i1++) {
-                    typeParameterCenter(info, (String) t.get(i));
-                    i++;
-                }
-            }
+            //需要调用每个类型的转换方法
+//            for (int i = 0; i < t.size();) {
+//                for (int i1 = 0; i1 < label.size(); i1++) {
+//                    T t1 = t.get(i);
+//
+//                    //typeParameterCenter(info, (String) t);
+//                    i++;
+//                }
+//            }
 
             document.add(info);
         } catch (DocumentException | IOException e) {
