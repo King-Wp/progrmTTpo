@@ -3,13 +3,13 @@ import cdm.experiment.dao.CusPersonaCompanyProduct;
 import cdm.experiment.utils.FontUtils;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import javafx.scene.text.TextAlignment;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -47,57 +47,103 @@ public class PDFText {
             // 添加页面
             document.newPage();
             writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "客户洞察报告_test.png"));
+            writer.setPageEvent(new PdfEvent(imagePath + "客户洞察报告.png"));
             footerStyle(writer, document, null);
 
             document.newPage();
             writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "工商信息.png","测试"));
+            writer.setPageEvent(new PdfEvent(imagePath + "工商信息.png", "测试"));
             businessInformation(document);
 
             document.newPage();
             writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "资质证书.png","测试"));
+            writer.setPageEvent(new PdfEvent(imagePath + "资质证书.png", "测试"));
             qualifications(document);
 
             document.newPage();
             writer.setPageEvent(null);
-            writer.setPageEvent(new PdfEvent(imagePath + "公司产品信息.png","测试"));
-            List<CusPersonaCompanyProduct> objects = new ArrayList<>();
-            CusPersonaCompanyProduct cusPersonaCompanyProduct = new CusPersonaCompanyProduct(1L, "电力", "测试", "", "6656", "", "", "", "productName");
-            for (int i = 0; i < 10; i++) {
-                objects.add(cusPersonaCompanyProduct);
-            }
-            companyProductInfo(document, new ArrayList<>(Arrays.asList("产品名称", "产品简称", "产品分类", "领域")),objects);
+            writer.setPageEvent(new PdfEvent(imagePath + "公司产品信息.png", "测试"));
+            List<String> objects = new ArrayList<>();
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("产品名称", "产品简称", "产品分类", "领域")), objects);
 
-//            document.newPage();
-//            writer.setPageEvent(null);
-//            writer.setPageEvent(new PdfEvent(imagePath + "客户.png","测试"));
-//            companyProductInfo(document, new ArrayList<>(Arrays.asList("客户", "销售金额", "报告期", "数据来源")),objects);
-//
-//            document.newPage();
-//            writer.setPageEvent(null);
-//            writer.setPageEvent(new PdfEvent(imagePath + "公司人员结构.png","测试"));
-//            companyProductInfo(document, new ArrayList<>(Arrays.asList("职位", "姓名")),objects);
-//
-//            document.newPage();
-//            writer.setPageEvent(null);
-//            writer.setPageEvent(new PdfEvent(imagePath + "采购统计.png","测试"));
-//            topHeading(writer, document, "中国电信集团有限公司共采购项目4项，合计采购金额25598.3万元，其中：");
-//
-//            document.newPage();
-//            writer.setPageEvent(null);
-//            writer.setPageEvent(new PdfEvent(imagePath + "客户近三年招标结果.png","测试"));
-//            biddingRanking(document);
-//
-//            document.newPage();
-//            writer.setPageEvent(null);
-//            writer.setPageEvent(new PdfEvent(imagePath + "业绩库.png","测试"));
-//            List<String> objects2 = new ArrayList<>();
-//            for (int i = 0; i < 70; i++) {
-//                objects2.add("公司名称");
-//            }
-//            companyProductInfo(document, new ArrayList<>(Arrays.asList("客户单位全称", "合同名称", "合同编号", "金额","签订日期","所属公司","经办人")),objects2);
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "客户.png", "测试"));
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("客户", "销售金额", "报告期", "数据来源")), objects);
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "公司人员结构.png", "测试"));
+            subtitle("公司结构（天眼查）:", FontUtils.draw_black_bold_16(), document);
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("职位", "姓名")), objects);
+
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "采购统计.png", "测试"));
+            topHeading(writer, document, "中国电信集团有限公司共采购项目4项，合计采购金额25598.3万元，其中：");
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "客户近三年招标结果.png", "测试"));
+            biddingRanking(document,writer);
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "业绩库.png", "测试"));
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("客户单位全称", "合同名称", "合同编号", "金额", "签订日期", "所属公司", "经办人")), objects);
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "解决方案.png", "测试"));
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("方案名称", "联系人", "联系电话")), objects);
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "产品.png", "测试"));
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("产品名称", "所属行业", "简介", "录入公司", "联系人", "联系电话")), objects);
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "案例.png", "测试"));
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("案例名称", "所属行业", "客户名称", "所属公司", "联系人", "联系电话", "关联产品")), objects);
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "生态.png", "测试"));
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("公司名称", "维系公司", "联系人", "联系电话")), objects);
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "专家.png", "测试"));
+            companyProductInfo(document, new ArrayList<>(Arrays.asList("名称", "所属公司", "联系电话", "能力标签")), objects);
+
+            document.newPage();
+            writer.setPageEvent(null);
+            writer.setPageEvent(new PdfEvent(imagePath + "空白.png", "测试"));
+            PdfPTable tableList1 = new PdfPTable(4);
+            tableList1.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER); // 设置单元格水平居中
+            tableList1.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE); // 设置单元格垂直居中
+            float[] BidWidthsList1 = {0.1f, 0.8f, 0.1f, 0.1f};
+            tableList1.setWidths(BidWidthsList1);
+            tableList1.setWidthPercentage(100); // 宽度占页面的95%
+            PdfPTable table99 = new PdfPTable(1);
+            table99.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            table99.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
+            Anchor dest1 = new Anchor( "招投标清单", FontUtils.draw_black());
+            dest1.setName("NB");
+            Paragraph country1 = new Paragraph();
+            country1.add(dest1);
+            PdfPCell cell09 = new PdfPCell(country1);
+            cell09.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell09.setBorder(0);
+            table99.addCell(cell09);
+            document.add(table99);
+            document.add(new Paragraph("\n"));
+            redTypeCenter(tableList1, "编号");
+            redTypeCenter(tableList1, "项目名称");
+            redTypeCenter(tableList1, "金额");
+            redTypeCenter(tableList1, "发布日期");
 
             // 关闭文档
             document.close();
@@ -244,7 +290,7 @@ public class PDFText {
      *
      * @param document 页面对象
      */
-    public static <T> void companyProductInfo(Document document, List<String> label,List<T> t) {
+    public static <T> void companyProductInfo(Document document, List<String> label, List<T> t) {
         PdfPTable info = new PdfPTable(label.size());
         info.setWidthPercentage(95);
         try {
@@ -253,14 +299,12 @@ public class PDFText {
             }
 
             //需要调用每个类型的转换方法
-//            for (int i = 0; i < t.size();) {
-//                for (int i1 = 0; i1 < label.size(); i1++) {
-//                    T t1 = t.get(i);
-//
-//                    //typeParameterCenter(info, (String) t);
-//                    i++;
-//                }
-//            }
+            for (int i = 0; i < t.size(); ) {
+                for (int i1 = 0; i1 < label.size(); i1++) {
+                    typeParameterCenter(info, (String) t.get(i));
+                    i++;
+                }
+            }
 
             document.add(info);
         } catch (DocumentException | IOException e) {
@@ -273,7 +317,7 @@ public class PDFText {
      *
      * @param document 页面对象
      */
-    public static void biddingRanking(Document document) {
+    public static void biddingRanking(Document document,PdfWriter writer) {
         try {
             PdfPTable table = new PdfPTable(3);
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER); // 设置单元格水平居中
@@ -289,13 +333,13 @@ public class PDFText {
             PdfPTable content = new PdfPTable(5);
             content.getDefaultCell().setBorder(PdfPCell.NO_BORDER); // 去除边框线
             content.setWidthPercentage(100);
-            content.setWidths(new float[]{0.3f, 0.3f, 0.1f,0.3f,0.3f,});
+            content.setWidths(new float[]{0.3f, 0.3f, 0.1f, 0.3f, 0.3f,});
             content.getDefaultCell().setFixedHeight(30);
-            redTypeCenterBold(content,"公司名称");
-            redTypeCenterBold(content,"中标金额");
+            redTypeCenterBold(content, "公司名称");
+            redTypeCenterBold(content, "中标金额");
             content.addCell(new Phrase(" ", FontUtils.draw_black()));
-            redTypeCenterBold(content,"公司名称");
-            redTypeCenterBold(content,"中标金额");
+            redTypeCenterBold(content, "公司名称");
+            redTypeCenterBold(content, "中标金额");
 
             for (int i = 0; i < 10; i++) {
                 typeParameterCenter(content, "中通服咨询设计研究院有限公司");
@@ -305,11 +349,28 @@ public class PDFText {
                 typeParameterCenter(content, "21635.95(万元)");
             }
 
+            promptWords("*注：数据来源于天眼查", FontUtils.hyperlinks(), writer, new Rectangle(150, 0, 300, 78));
+
             document.add(table);
             document.add(content);
+            Anchor toUSe = new Anchor("附件：招投标清单", FontUtils.hyperlinks());
+            toUSe.setReference("#NB");
+            document.add(toUSe);// 取到锚点
         } catch (DocumentException | IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void promptWords(String prompt, Font exegesis, PdfWriter writer, Rectangle rects) throws DocumentException {
+        //提示 商机更准确
+        Paragraph p1 = new Paragraph(prompt, exegesis);
+        p1.setAlignment(Element.ALIGN_CENTER);//设置对齐方式
+
+        writer.getDirectContent().rectangle(rects);
+        ColumnText ct1 = new ColumnText(writer.getDirectContent());
+        ct1.addElement(p1);
+        ct1.setSimpleColumn(rects);
+        ct1.go();
     }
 
     /**
@@ -375,20 +436,75 @@ public class PDFText {
      */
     public static void topHeading(PdfWriter writer, Document document, String titleName) {
         try {
-            PdfContentByte cb = writer.getDirectContent();
-            // 创建包含两列的表格
-            PdfPTable title = new PdfPTable(1);
-            title.setTotalWidth(document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin() - 280); // 设置表格总宽度
-            // 添加单元格到表格
-            PdfPCell cell = new PdfPCell(new Paragraph(titleName, FontUtils.topHeading()));
-            cell.setBorder(PdfPCell.NO_BORDER);
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            title.addCell(cell);
-            // 设置表格的位置
-            // 使用页边距进行定位
-            title.writeSelectedRows(0, -1, document.leftMargin() + 124, document.top() + title.getTotalHeight() - 8, cb);
+
+            promptWordsR("4",writer,1,18, 447, 177);
+            promptWordsR("25598.3",writer,1,18, 365, 177);
+
+            promptWordsR("2559888.3",writer,2,260, 455, 177);
+            promptWordsR("2559888.3",writer,2,260, 400, 177);
+            promptWordsR("888.3",writer,2,260, 340, 177);
+
+            promptWordsR("2559888.3",writer,2,510, 455, 177);
+            promptWordsR("2559888.3",writer,2,510, 400, 177);
+            promptWordsR("888.3",writer,2,510, 340, 177);
+
+            promptWordsR("2559888.3",writer,2,755, 455, 177);
+            promptWordsR("2559888.3",writer,2,755, 400, 177);
+            promptWordsR("888.3",writer,2,755, 340, 177);
+
+            Image image = Image.getInstance("C:/ruoyi/uploadPath/ls2/客户洞察报告.png");
+            float desiredWidth = 550; // 设置宽度为 200 像素
+            float desiredHeight = 230; // 设置高度为 150 像素
+            image.scaleAbsolute(desiredWidth, desiredHeight);
+
+            PdfPTable table2 = new PdfPTable(2);
+            table2.setWidthPercentage(100);
+            table2.getDefaultCell().setFixedHeight(100);
+            table2.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
+            table2.getDefaultCell().setVerticalAlignment(Element.ALIGN_RIGHT); // 设置单元格垂直居中
+
+            float[] iWidths = {0.4f, 0.6f};
+            table2.setWidths(iWidths);
+
+            Paragraph paragraph = new Paragraph();
+            paragraph.add(websiteRedirect("#NB", "中国电信集团有限公司招投标清单"));
+
+            PdfPCell cell22 = new PdfPCell(paragraph);
+            cell22.setBorder(0);
+            cell22.setVerticalAlignment(Element.ALIGN_BOTTOM); // 底部对齐
+            table2.addCell(cell22);
+
+
+            PdfPCell cell23 = new PdfPCell(image);
+            table2.addCell(cell23);
+            document.add(new Paragraph("\n\n\n\n\n\n\n\n\n\n"));
+            document.add(table2);
+
+
 
         } catch (DocumentException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void promptWordsR( String prompt, PdfWriter writer,int align, float x, float y, float width) throws DocumentException {
+        try {
+            Paragraph p1 = new Paragraph(prompt, FontUtils.draw_red_bold());
+            p1.setAlignment(align);
+
+            PdfPTable table = new PdfPTable(1);
+            table.setWidthPercentage(100); // 设置表格宽度百分比
+
+            PdfPCell cell = new PdfPCell(p1);
+            cell.setHorizontalAlignment(align); // 设置单元格水平对齐方式
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE); // 设置单元格垂直对齐方式
+            cell.setBorderWidth(0); // 取消单元格边框
+            table.addCell(cell);
+
+            table.setTotalWidth(width);
+            table.setLockedWidth(true);
+            table.writeSelectedRows(0, -1, x, y, writer.getDirectContent());
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -501,6 +617,20 @@ public class PDFText {
         Anchor anchor = new Anchor(text, FontUtils.hyperlinks());
         anchor.setReference(url);
         return anchor;
+    }
+
+    private static void subtitle(String text, Font Tfont, Document document) throws DocumentException {
+        PdfPTable elements1 = new PdfPTable(1);
+        elements1.setWidthPercentage(97); // 宽度占页面的95%
+        elements1.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT); // 设置单元格水平居中
+        elements1.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE); // 设置单元格垂直居中
+        elements1.getDefaultCell().setFixedHeight(20); // 设置单元格的固定高度
+        PdfPCell elements = new PdfPCell(new Phrase(text, Tfont));
+        elements.setBorder(0);
+        elements.setBorder(0);
+        elements.setBorder(0);
+        elements1.addCell(elements);
+        document.add(elements1);
     }
 
 }

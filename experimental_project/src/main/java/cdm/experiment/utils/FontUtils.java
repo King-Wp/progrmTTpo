@@ -39,6 +39,20 @@ public class FontUtils {
         return font;
     }
 
+    public static Font draw_red_bold() throws DocumentException, IOException {
+        BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font font = new Font(baseFont, 26, Font.BOLD);
+        font.setColor(new BaseColor(197, 0, 0));
+        return font;
+    }
+
+    public static Font draw_black_bold_16() throws DocumentException, IOException {
+        BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font font = new Font(baseFont, 16, Font.BOLD);
+        font.setColor(BaseColor.BLACK);
+        return font;
+    }
+
     public static Font draw_bold() throws DocumentException, IOException {
         BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         Font font = new Font(baseFont, 12, Font.BOLD);
